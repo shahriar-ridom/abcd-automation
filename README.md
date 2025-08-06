@@ -273,12 +273,12 @@ We welcome contributions! Here's how you can help:
 
 ### 🐛 Found a Bug?
 
-- [Create an issue](https://github.com/yourusername/abc-automation/issues) with detailed description
+- [Create an issue](https://github.com/shahriar-ridom/abc-automation/issues) with detailed description
 - Include steps to reproduce and expected behavior
 
 ### 💡 Have an Idea?
 
-- [Open a feature request](https://github.com/yourusername/abc-automation/issues)
+- [Open a feature request](https://github.com/shahriar-ridom/abc-automation/issues)
 - Explain the use case and potential implementation
 
 ### 🔧 Want to Code?
