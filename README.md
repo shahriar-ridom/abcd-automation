@@ -273,12 +273,12 @@ We welcome contributions! Here's how you can help:
 
 ### 🐛 Found a Bug?
 
-- [Create an issue](https://github.com/shahriar-ridom/abc-automation/issues) with detailed description
+- [Create an issue](https://github.com/shahriar-ridom/abcd-automation/issues) with detailed description
 - Include steps to reproduce and expected behavior
 
 ### 💡 Have an Idea?
 
-- [Open a feature request](https://github.com/shahriar-ridom/abc-automation/issues)
+- [Open a feature request](https://github.com/shahriar-ridom/abcd-automation/issues)
 - Explain the use case and potential implementation
 
 ### 🔧 Want to Code?
@@ -312,7 +312,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 Need help? We're here for you!
 
 - 📧 **Email**: [shahriarridom.info@gmail.com](mailto:shahriarridom.info@gmail.com)
-- 🐛 **Issues**: [Report bugs](https://github.com/shahriar-ridom/abc-automation/issues)
+- 🐛 **Issues**: [Report bugs](https://github.com/shahriar-ridom/abcd-automation/issues)
 
 ---
 
