@@ -1,313 +1,325 @@
 # 🚀 ABC Automation - AI-Powered Social Media Content Generator
 
-> Transform trending topics into engaging Facebook posts with AI-generated content and custom thumbnail images
+<div align="center">
 
-[![Next.js](https://img.shields.io/badge/Next.js-15.4.5-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
-[![LangChain](https://img.shields.io/badge/LangChain-0.3.x-green?style=for-the-badge)](https://langchain.com/)
-[![TailwindCSS](https://img.shields.io/badge/Tailwind-4.x-38bdf8?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
+![Next.js](https://img.shields.io/badge/Next.js-15.4.5-black?style=for-the-badge&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.0-06B6D4?style=for-the-badge&logo=tailwindcss)
+![LangChain](https://img.shields.io/badge/LangChain-0.3.30-green?style=for-the-badge&logo=chainlink)
+
+**An intelligent social media automation system that generates trending Facebook posts with custom AI-generated images**
+
+[✨ Features](#-features) • [🛠️ Tech Stack](#️-tech-stack) • [⚡ Quick Start](#-quick-start) • [🔧 Configuration](#-configuration) • [📖 Usage](#-usage)
+
+</div>
+
+---
+
+## 🌟 Overview
+
+ABC Automation is a cutting-edge Next.js application that leverages AI to automatically generate engaging Facebook posts based on trending topics. The system combines intelligent web research, content generation, and custom image creation to produce professional social media content in seconds.
 
 ## ✨ Features
 
-- 🔥 **Real-time Trend Analysis** - Automatically fetches trending topics from Hacker News, Reddit, and more
-- 🤖 **AI-Powered Content Generation** - Creates engaging Facebook posts using advanced language models
-- 🎨 **AI Image Generation** - Generates custom thumbnail images using FLUX.1 model via Together AI
-- 📊 **Multi-Source Data Integration** - Combines insights from multiple trending content sources
-- 💡 **Smart Prompt Engineering** - Uses AI to create optimal image generation prompts
-- � **Beautiful UI** - Clean, modern interface built with Tailwind CSS
-- ⚡ **Fast & Reliable** - Built on Next.js 15 with optimized performance
-- 🔒 **Environment-Safe** - Secure API key management and error handling
+### 🎯 **Core Capabilities**
+
+- **🔍 Trending Topic Research** - Automatically discovers the latest trends in any niche using Google Custom Search
+- **📝 AI Content Generation** - Creates engaging Facebook posts using advanced LLM models
+- **🎨 Custom Image Generation** - Produces relevant visuals using FLUX.1-schnell AI model
+- **⚡ Real-time Processing** - Fast, efficient content generation with live progress tracking
+- **🎨 Modern UI/UX** - Beautiful, responsive interface built with TailwindCSS
+
+### 🤖 **AI-Powered Workflow**
+
+1. **Research Phase** - Searches Google for trending topics in your specified niche
+2. **Content Creation** - Generates compelling Facebook post content based on findings
+3. **Visual Generation** - Creates matching images to accompany the post
+4. **Instant Delivery** - Returns both text and image ready for social media posting
+
+### 🛡️ **Production Ready**
+
+- **Error Handling** - Comprehensive error management and user feedback
+- **Type Safety** - Full TypeScript implementation
+- **Responsive Design** - Works perfectly on desktop and mobile
+- **Environment Security** - Secure API key management
+
+---
 
 ## 🛠️ Tech Stack
 
-| Technology       | Purpose                                    | Version |
-| ---------------- | ------------------------------------------ | ------- |
-| **Next.js**      | Full-stack React framework                 | 15.4.5  |
-| **TypeScript**   | Type-safe development                      | 5.x     |
-| **LangChain**    | AI/LLM integration framework               | 0.3.x   |
-| **OpenRouter**   | Multi-model LLM API access                 | Latest  |
-| **Together AI**  | AI image generation with FLUX.1 model      | Latest  |
-| **Tailwind CSS** | Utility-first CSS framework                | 4.x     |
-| **pnpm**         | Fast, disk space efficient package manager | Latest  |
+<table>
+<tr>
+<td align="center"><strong>Frontend</strong></td>
+<td align="center"><strong>Backend</strong></td>
+<td align="center"><strong>AI & APIs</strong></td>
+<td align="center"><strong>Styling</strong></td>
+</tr>
+<tr>
+<td>
 
-## 🚀 Quick Start
+- **Next.js 15.4.5** - React Framework
+- **React 19** - UI Library
+- **TypeScript 5** - Type Safety
 
-### Prerequisites
+</td>
+<td>
 
-- Node.js 18+
-- pnpm (recommended) or npm
-- OpenRouter API key
-- Together AI API key (for image generation)
+- **Next.js API Routes** - Backend Logic
+- **LangChain 0.3.30** - AI Agent Framework
+- **Zod 4.0** - Schema Validation
 
-### Installation
+</td>
+<td>
 
-1. **Clone the repository**
+- **OpenRouter** - LLM Access (Gemini 2.0 Flash)
+- **Together AI** - FLUX.1 Image Generation
+- **Google Custom Search** - Trending Research
 
-   ```bash
-   git clone https://github.com/yourusername/abc-automation.git
-   cd abc-automation
-   ```
+</td>
+<td>
 
-2. **Install dependencies**
+- **TailwindCSS 4** - Modern Styling
+- **CSS Gradients** - Beautiful UI
+- **Responsive Design** - Mobile First
 
-   ```bash
-   pnpm install
-   ```
+</td>
+</tr>
+</table>
 
-3. **Set up environment variables**
+---
 
-   ```bash
-   cp .env.example .env.local
-   ```
+## ⚡ Quick Start
 
-   Add your API keys to `.env.local`:
+### 📋 Prerequisites
 
-   ```env
-   OPENROUTER_API_KEY=your_openrouter_api_key_here
-   TOGETHER_API_KEY=your_together_ai_api_key_here
-   ```
+- **Node.js 18+** and **npm/pnpm**
+- **OpenRouter API Key** ([Get free key](https://openrouter.ai/keys))
+- **Together AI API Key** ([Get free key](https://api.together.xyz/settings/api-keys))
+- **Google Custom Search API** ([Setup guide](https://developers.google.com/custom-search/v1/introduction))
 
-4. **Run the development server**
+### 🚀 Installation
 
-   ```bash
-   pnpm dev
-   ```
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/abc-automation.git
+cd abc-automation
 
-5. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+# Install dependencies
+npm install
+# or
+pnpm install
 
-## 📖 How It Works
+# Set up environment variables
+cp .env.example .env.local
 
-```mermaid
-graph TD
-    A[User Input] --> B[API Route]
-    B --> C[CreatePostAgent]
-    C --> D[Fetch Hacker News]
-    C --> E[Fetch Reddit Content]
-    C --> F[Generate Trending Topics]
-    D --> G[Combine Content]
-    E --> G
-    F --> G
-    G --> H[AI Content Generation]
-    H --> I[Facebook Post Output]
-    I --> J[Generate Image Prompt]
-    J --> K[Together AI Image Generation]
-    K --> L[Display Post + Image]
+# Start development server
+npm run dev
+# or
+pnpm dev
 ```
 
-### Content Sources
+Visit [http://localhost:3000](http://localhost:3000) to see the application!
 
-- **🔥 Hacker News API** - Latest tech discussions and trending stories
-- **📱 Reddit Programming** - Community-driven programming discussions
-- **📈 Trending Topics** - AI-generated related trending subjects
-
-### AI Models & Services
-
-The application uses multiple AI services for different tasks:
-
-#### Content Generation
-
-- **DeepSeek R1** (via OpenRouter) for:
-  - Content analysis and synthesis
-  - Trend identification
-  - Engaging social media copy generation
-  - Hashtag suggestions and call-to-action creation
-
-#### Image Generation
-
-- **FLUX.1-schnell-Free** (via Together AI) for:
-
-  - Custom thumbnail image generation
-  - Smart prompt engineering for optimal image results
-  - Fast, high-quality image synthesis
-
-- **🔥 Hacker News API** - Latest tech discussions and trending stories
-- **📱 Reddit Programming** - Community-driven programming discussions
-- **📈 Trending Topics** - AI-generated related trending subjects
-
-### AI Models
-
-The application uses **DeepSeek R1** through OpenRouter for:
-
-- Content analysis and synthesis
-- Trend identification
-- Engaging social media copy generation
-- Hashtag suggestions and call-to-action creation
-
-## 🎯 Usage
-
-1. **Enter a Topic**: Type any subject you want to create content about
-2. **AI Analysis**: The system fetches real-time data from multiple sources
-3. **Content Generation**: AI analyzes trends and creates an engaging Facebook post
-4. **Image Generation**: AI creates a custom thumbnail image based on the post content
-5. **Ready to Share**: Get a polished post with image, hashtags, and call-to-action
-
-### Example Input/Output
-
-**Input:** `"React hooks"`
-
-**Text Output:**
-
-```
-🚀 React Hooks are revolutionizing how we build components!
-
-The latest discussions show developers are loving the simplicity of useState and useEffect for state management. With 847 upvotes on the latest Hacker News thread, it's clear that hooks are here to stay!
-
-✨ Key benefits:
-- Cleaner, more readable code
-- Better state logic reuse
-- Easier testing and debugging
-
-Ready to upgrade your React skills?
-
-#ReactHooks #JavaScript #WebDevelopment #FrontendDev #ReactJS #Programming
-```
-
-**Image Output:** Custom AI-generated thumbnail showing React components and hooks concept
-
-✨ Key benefits:
-
-- Cleaner, more readable code
-- Better state logic reuse
-- Easier testing and debugging
-
-Ready to upgrade your React skills?
-
-#ReactHooks #JavaScript #WebDevelopment #FrontendDev #ReactJS #Programming
-
-```
-
-## 📁 Project Structure
-
-```
-
-abc-automation/
-├── app/
-│ ├── api/
-│ │ ├── automate/
-│ │ │ └── route.ts # Main content generation API
-│ │ └── imageGen/
-│ │ └── route.ts # Image generation API
-│ ├── globals.css # Global styles
-│ ├── layout.tsx # App layout
-│ └── page.tsx # Homepage/form
-├── lib/
-│ ├── functions/
-│ │ ├── CreatePostAgent.ts # Main AI content agent
-│ │ ├── GenerateImage.ts # AI image generation
-│ │ ├── FetchHackerNews.ts # Hacker News API
-│ │ ├── FetchReddit.ts # Reddit API
-│ │ └── FetchTrends.ts # Trending topics
-│ └── openrouter.ts # OpenRouter configuration
-├── public/ # Static assets
-├── package.json # Dependencies
-└── README.md # This file
-
-````
+---
 
 ## 🔧 Configuration
 
-### Environment Variables
+### 🔑 Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `OPENROUTER_API_KEY` | Your OpenRouter API key for text generation | ✅ |
-| `TOGETHER_API_KEY` | Your Together AI API key for image generation | ✅ |
+Create a `.env.local` file in the root directory:
 
-### Customization
+```bash
+# Required: OpenRouter API (FREE tier available)
+OPENROUTER_API_KEY=your_openrouter_api_key_here
 
-#### Text Generation Model
-You can customize the AI model by editing `lib/functions/CreatePostAgent.ts`:
+# Required: Together AI API (FREE FLUX.1 model)
+TOGETHER_API_KEY=your_together_ai_api_key_here
+
+# Required: Google Custom Search
+GOOGLE_API_KEY=your_google_api_key_here
+GOOGLE_CSE_ID=your_custom_search_engine_id_here
+```
+
+### 🎛️ API Configuration
+
+| Service                  | Purpose                    | Cost                     | Setup Link                                                                 |
+| ------------------------ | -------------------------- | ------------------------ | -------------------------------------------------------------------------- |
+| **OpenRouter**           | LLM for content generation | FREE tier available      | [Get API Key](https://openrouter.ai/keys)                                  |
+| **Together AI**          | FLUX.1 image generation    | FREE tier (5 images/day) | [Get API Key](https://api.together.xyz/settings/api-keys)                  |
+| **Google Custom Search** | Trending topic research    | FREE (100 queries/day)   | [Setup Guide](https://developers.google.com/custom-search/v1/introduction) |
+
+---
+
+## 📖 Usage
+
+### 🎯 Basic Usage
+
+1. **Enter Your Niche** - Type any topic or industry (e.g., "Next.js", "AI", "Web Development")
+2. **Click Generate** - The AI will research trending topics and create content
+3. **Get Results** - Receive a complete Facebook post with matching image
+4. **Copy & Post** - Use the generated content directly on your social media
+
+### 🔄 AI Workflow
+
+```mermaid
+graph LR
+    A[User Input] --> B[Google Search]
+    B --> C[Trend Analysis]
+    C --> D[Content Generation]
+    D --> E[Image Creation]
+    E --> F[Final Output]
+
+    style A fill:#e1f5fe
+    style F fill:#e8f5e8
+    style C fill:#fff3e0
+    style D fill:#fce4ec
+    style E fill:#f3e5f5
+```
+
+### 📱 Example Output
+
+**Input:** `"Next.js"`
+
+**Generated Post:**
+
+```
+🚀 Level Up Your Next.js Game with Server Components! 🚀
+
+The Next.js App Router is a game-changer, and Server Components are at the heart of it! 💻
+Learn how to build faster, more dynamic, and SEO-friendly applications.
+
+✨ Benefits of Server Components:
+- Improved performance
+- Reduced client-side JavaScript
+- Direct data fetching
+- Enhanced security
+
+Dive into the future of web development!
+#Nextjs #React #ServerComponents #WebDev #Frontend #JavaScript
+```
+
+**Generated Image:** Custom AI-generated visual related to Next.js and server components
+
+---
+
+## 🎨 Customization
+
+### 🔧 Modify AI Models
 
 ```typescript
+// In app/api/agent/route.ts
 const llm = ChatOpenRouter({
-  apiKey: openRouterApiKey,
-  modelName: "deepseek/deepseek-r1-0528:free", // Change this to use different models
+  modelName: "google/gemini-2.0-flash-exp:free", // Change model here
+  apiKey: api_key,
 });
-````
+```
 
-Available free models on OpenRouter:
+### 🎭 Customize Post Style
 
-- `deepseek/deepseek-r1-0528:free`
-- `qwen/qwen3-coder:free`
-- `meta-llama/llama-3.2-3b-instruct:free`
+Update the system prompt in `/app/api/agent/route.ts` to change:
 
-#### Image Generation Model
+- Writing tone and style
+- Post structure and format
+- Hashtag preferences
+- Content length
 
-You can customize the image model by editing `lib/functions/GenerateImage.ts`:
+### 🖼️ Image Generation Settings
 
 ```typescript
+// In generateImageTool function
 const response = await together.images.create({
-  model: "black-forest-labs/FLUX.1-schnell-Free", // Free FLUX model
-  prompt: topicContent,
+  model: "black-forest-labs/FLUX.1-schnell-Free",
+  prompt: `${prompt}`, // Customize prompt engineering
 });
 ```
 
-});
-
-```
-
-Available free models on OpenRouter:
-
-- `deepseek/deepseek-r1-0528:free`
-- `qwen/qwen3-coder:free`
-- `meta-llama/llama-3.2-3b-instruct:free`
+---
 
 ## 🚀 Deployment
 
-### Vercel (Recommended)
+### 📦 Build for Production
 
-1. Push your code to GitHub
-2. Connect your repository to [Vercel](https://vercel.com)
-3. Add your environment variables in the Vercel dashboard
-4. Deploy automatically with every push
+```bash
+npm run build
+npm start
+```
 
-### Other Platforms
+### ☁️ Deploy to Vercel (Recommended)
 
-The app can be deployed on any platform that supports Next.js:
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/abc-automation)
 
-- **Netlify**
-- **Railway**
-- **Render**
-- **AWS Amplify**
+1. Connect your GitHub repository
+2. Add environment variables in Vercel dashboard
+3. Deploy automatically
+
+### 🐳 Deploy with Docker
+
+```dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+RUN npm run build
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+We welcome contributions! Here's how you can help:
 
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+### 🐛 Found a Bug?
+
+- [Create an issue](https://github.com/yourusername/abc-automation/issues) with detailed description
+- Include steps to reproduce and expected behavior
+
+### 💡 Have an Idea?
+
+- [Open a feature request](https://github.com/yourusername/abc-automation/issues)
+- Explain the use case and potential implementation
+
+### 🔧 Want to Code?
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📝 License
+---
+
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+---
+
 ## 🙏 Acknowledgments
 
-- [OpenRouter](https://openrouter.ai/) - For providing access to multiple AI models
-- [Together AI](https://together.ai/) - For free FLUX.1 image generation API
-- [LangChain](https://langchain.com/) - For the excellent AI/LLM framework
-- [Hacker News API](https://github.com/HackerNews/API) - For trending tech content
-- [Reddit API](https://www.reddit.com/dev/api/) - For community discussions
-- [Black Forest Labs](https://blackforestlabs.ai/) - For the amazing FLUX.1 image model
-- [Reddit API](https://www.reddit.com/dev/api/) - For community discussions
+- **OpenRouter** - For providing access to cutting-edge LLM models
+- **Together AI** - For free FLUX.1 image generation capabilities
+- **LangChain** - For the powerful AI agent framework
+- **Next.js Team** - For the amazing React framework
+- **Google** - For Custom Search API enabling trend research
+
+---
 
 ## 📞 Support
 
-If you have any questions or need help getting started:
+Need help? We're here for you!
 
-- 📧 Create an issue in this repository
-- 💬 Start a discussion in the Discussions tab
-- 🐛 Report bugs with detailed reproduction steps
+- 📧 **Email**: [shahriarridom.info@gmail.com](mailto:shahriarridom.info@gmail.com)
+- 🐛 **Issues**: [Report bugs](https://github.com/shahriar-ridom/abc-automation/issues)
 
 ---
 
 <div align="center">
-  <strong>Made with ❤️ and AI</strong>
-  <br>
-  <sub>Transforming trends into engaging content</sub>
+
+**Made with ❤️ by [Shahriar Ridom](https://github.com/shahriar-ridom)**
+
+⭐ **Star this repo if it helped you!** ⭐
+
 </div>
-```
