@@ -7,76 +7,222 @@ import { AgentExecutor, createReactAgent } from "langchain/agents";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { Together } from "together-ai/client";
 
-export async function POST(req: NextRequest) {
+// Simple in-memory cache and rate limiting
+const cache = new Map();
+const rateLimitMap = new Map();
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const MAX_REQUESTS_PER_WINDOW = 3; // Max 3 requests per minute
+const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes cache
+
+// Rate limiting function
+function checkRateLimit(clientId: string): boolean {
+  const now = Date.now();
+  const clientData = rateLimitMap.get(clientId) || {
+    requests: [],
+    lastReset: now,
+  };
+
+  // Remove old requests outside the window
+  clientData.requests = clientData.requests.filter(
+    (timestamp: number) => now - timestamp < RATE_LIMIT_WINDOW
+  );
+
+  // Check if under limit
+  if (clientData.requests.length >= MAX_REQUESTS_PER_WINDOW) {
+    return false; // Rate limit exceeded
+  }
+
+  // Add current request
+  clientData.requests.push(now);
+  rateLimitMap.set(clientId, clientData);
+  return true;
+}
+
+// Cache function
+function getCachedResult(key: string) {
+  const cached = cache.get(key);
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    return cached.data;
+  }
+  return null;
+}
+
+function setCachedResult(key: string, data: any) {
+  cache.set(key, { data, timestamp: Date.now() });
+}
+
+export async function POST(request: NextRequest) {
   try {
-    const { niche } = await req.json();
+    // Get IP address for rate limiting
+    const forwarded = request.headers.get("x-forwarded-for");
+    const ip = forwarded
+      ? forwarded.split(",")[0]
+      : request.headers.get("x-real-ip") || "unknown";
 
-    const api_key = process.env.OPENROUTER_API_KEY;
-
-    // Check if API key is available
-    if (!process.env.TOGETHER_API_KEY) {
-      console.log("No Together AI API key provided");
-      return { imageUrl: null, error: "No API key configured" };
+    // Check rate limit
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json(
+        {
+          error:
+            "Rate limit exceeded. Please wait before making another request.",
+          retryAfter: "3 minutes",
+        },
+        { status: 429 }
+      );
     }
 
-    if (!api_key) {
+    const { niche } = await request.json();
+
+    if (!niche) {
+      return NextResponse.json({ error: "Niche is required" }, { status: 400 });
+    }
+
+    // Check if we have cached results for this niche
+    const cacheKey = `niche_${niche.toLowerCase().replace(/\s+/g, "_")}`;
+    const cachedResult = getCachedResult(cacheKey);
+
+    if (cachedResult) {
+      console.log("Returning cached result for niche:", niche);
+      return NextResponse.json(cachedResult);
+    }
+
+    console.log("Processing new request for niche:", niche);
+
+    // Initialize API clients
+    const api_key = process.env.OPENROUTER_API_KEY;
+    const google_api_key = process.env.GOOGLE_API_KEY;
+    const google_cse_id = process.env.GOOGLE_CSE_ID;
+    const together_api_key = process.env.TOGETHER_API_KEY;
+
+    if (!api_key || !google_api_key || !google_cse_id || !together_api_key) {
       return NextResponse.json(
-        { error: "API key is missing" },
+        { error: "Missing required API keys" },
         { status: 500 }
       );
     }
 
     const search = new GoogleCustomSearch({
-      apiKey: process.env.GOOGLE_API_KEY,
-      googleCSEId: process.env.GOOGLE_CSE_ID,
+      apiKey: google_api_key,
+      googleCSEId: google_cse_id,
     });
 
     const together = new Together({
-      apiKey: process.env.TOGETHER_API_KEY,
+      apiKey: together_api_key,
     });
 
-    // Define the Google search tool
+    // Define the Google search tool with enhanced caching
     const searchTool = tool(
       async (query) => {
         try {
+          // Check cache for search results
+          const searchCacheKey = `search_${query
+            .toLowerCase()
+            .replace(/\s+/g, "_")}`;
+          const cachedSearch = getCachedResult(searchCacheKey);
+          if (cachedSearch) {
+            console.log("Using cached search results for:", query);
+            return cachedSearch;
+          }
+
           console.log("Performing Google search for:", query);
 
-          const results = await search.invoke({ query });
-          console.log("Google search results:", results);
-          return results;
+          // Calculate date range for last 3 days
+          const today = new Date();
+          const threeDaysAgo = new Date(today);
+          threeDaysAgo.setDate(today.getDate() - 3);
+
+          const formatDate = (date: Date) => {
+            return date.toISOString().split("T")[0]; // YYYY-MM-DD format
+          };
+
+          const results = await search.invoke({
+            query: query,
+            // Limit to last 3 days using date range
+            dateRestrict: "d3", // Last 3 days
+            // Limit number of results to save API quota
+            num: 3, // Reduced from 5 to 3 to save quota
+            // Sort by date to get most recent first
+            sort: "date",
+          });
+
+          console.log("Google search results (limited):", results);
+
+          // Further trim the results to keep only essential info
+          let processedResults;
+          if (typeof results === "string") {
+            // If results is a string, truncate it to save token usage
+            processedResults =
+              results.length > 800
+                ? results.substring(0, 800) + "... (truncated for efficiency)"
+                : results;
+          } else {
+            processedResults = results;
+          }
+
+          // Cache the search results
+          setCachedResult(searchCacheKey, processedResults);
+
+          return processedResults;
         } catch (error) {
           console.error("Error during Google search:", error);
-          return { error: "Failed to perform Google search" };
+          return "Failed to perform Google search. Please try a different query.";
         }
       },
       {
         name: "google_search",
         description:
-          "Searches Google for the given query and returns the top results.",
-        schema: z.string().describe("The search query to look for on Google."),
+          "Searches Google for trending topics from the last 3 days only. Returns recent, relevant results to save API quota.",
+        schema: z
+          .string()
+          .describe(
+            "The search query to look for recent trending topics on Google."
+          ),
       }
     );
 
     const generateImageTool = tool(
       async (prompt: string) => {
         try {
+          // Check cache for image generation results
+          const imageCacheKey = `image_${prompt
+            .toLowerCase()
+            .replace(/\s+/g, "_")
+            .substring(0, 50)}`;
+          const cachedImage = getCachedResult(imageCacheKey);
+          if (cachedImage) {
+            console.log("Using cached image generation result");
+            return cachedImage;
+          }
+
+          console.log("Generating image for prompt:", prompt);
+
+          // Add a small delay to prevent hitting rate limits
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+
           const response = await together.images.create({
             model: "black-forest-labs/FLUX.1-schnell-Free",
             prompt: `${prompt}`,
           });
+
           if (response.data && response.data[0]) {
             const imageData = response.data[0];
+            let result;
 
             // Check if it's base64 format
             if ("b64_json" in imageData && imageData.b64_json) {
               const base64Image = imageData.b64_json;
               const imageUrl = `data:image/png;base64,${base64Image}`;
-              return `Image generated successfully: ${imageUrl}`;
+              result = `Image generated successfully: ${imageUrl}`;
+            }
+            // Check if it's URL format
+            else if ("url" in imageData && imageData.url) {
+              result = `Image generated successfully: ${imageData.url}`;
             }
 
-            // Check if it's URL format
-            if ("url" in imageData && imageData.url) {
-              return `Image generated successfully: ${imageData.url}`;
+            if (result) {
+              // Cache the successful result
+              setCachedResult(imageCacheKey, result);
+              return result;
             }
           } else {
             console.error("No image data in Together AI response");
@@ -124,9 +270,8 @@ export async function POST(req: NextRequest) {
     const agentExecutor = new AgentExecutor({
       agent,
       tools,
-      maxIterations: 5, // Increased to allow for both search and image generation
-      returnIntermediateSteps: true, // Enable to capture tool outputs
-      verbose: true, // Enable verbose logging
+      maxIterations: 10,
+      verbose: true,
     });
 
     const result = await agentExecutor.invoke({
@@ -156,17 +301,20 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({
-      post: result.output,
+    const response = {
+      content: result.output || "No content generated",
       imageUrl: imageUrl,
-    });
+      niche: niche,
+    };
+
+    // Cache the successful result
+    setCachedResult(cacheKey, response);
+
+    return NextResponse.json(response);
   } catch (error) {
-    console.error("Error in agent route:", error);
+    console.error("Error:", error);
     return NextResponse.json(
-      {
-        error: "Failed to generate post",
-        details: error instanceof Error ? error.message : "Unknown error",
-      },
+      { error: "Failed to generate content" },
       { status: 500 }
     );
   }
